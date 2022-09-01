@@ -1,0 +1,73 @@
+{
+    "family": "node-datadog",
+    "networkMode": "awsvpc",
+    "executionRoleArn": "arn:aws:iam::072056452537:role/aws-perspective-072056452537-EcsTaskExecutionRole-WS16YA4AOO8R",
+    "containerDefinitions": [
+        {
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                  "awslogs-group": "/ecs/node-datadog",
+                  "awslogs-region": "us-east-1",
+                  "awslogs-stream-prefix": "ecs"
+                }
+              },
+            "name": "node-server",
+            "image": "072056452537.dkr.ecr.us-east-1.amazonaws.com/node-server",
+            "portMappings": [
+                {
+                    "containerPort": 5050,
+                    "hostPort": 5050,
+                    "protocol": "tcp"
+                }
+            ],
+            "essential": true,
+            "dockerLabels": {
+                "com.datadoghq.ad.instances": "[{\"host\": \"%%host%%\", \"port\": 5050}]",
+                "com.datadoghq.ad.check_names": "[\"node-server\"]",
+                "com.datadoghq.ad.init_configs": "[{}]"
+            }
+        }, {
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                  "awslogs-group": "/ecs/node-datadog",
+                  "awslogs-region": "us-east-1",
+                  "awslogs-stream-prefix": "ecs"
+                }
+              },
+            "name": "datadog-agent",
+            "image": "072056452537.dkr.ecr.us-east-1.amazonaws.com/datadog",
+            "essential": true,
+            "environment": [
+                {
+                    "name": "DD_API_KEY",
+                    "value": "API_KEY"
+                    
+                },
+                {
+                    "name": "ECS_FARGATE",
+                    "value": "true"
+                },
+                {
+                    "name":"DD_SITE",
+                    "value":"datadoghq.com"
+                },
+                {
+                    "name": "DD_PROCESS_AGENT_ENABLED",
+                    "value": "true"
+                },
+                {
+                    "name": "DD_DOGSTATSD_NON_LOCAL_TRAFFIC",
+                    "value": "true"
+                }
+            ]
+       }
+    ],
+
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512"
+}
