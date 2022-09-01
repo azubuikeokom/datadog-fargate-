@@ -7,7 +7,7 @@ aws ecs run-task --cluster fargate-test \
 --task-definition arn:aws:ecs:us-east-1:782658599825:task-definition/redis-datadog:10 \
 --region us-east-1 --launch-type FARGATE --platform-version 1.4.0 
 
-dfad7305dda66a9d69fcd12d3f36d3ab009a7782
+
 
 Within the cluster, click the Services tab, then click the Service Name.
 Click the Update button.
